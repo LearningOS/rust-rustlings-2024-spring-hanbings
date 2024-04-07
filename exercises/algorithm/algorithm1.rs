@@ -66,7 +66,33 @@ impl<T> LinkedList<T> {
         }
     }
     pub fn merge(list_a: LinkedList<T>, list_b: LinkedList<T>) -> Self {
-        //TODO
+        // First compare who is longer, our goal is to splice the short one to the long chain
+        // Then read the short chain in a loop
+        // Keep splicing it to the end of the long chain.
+        // return the long chain
+        let (longer, shorter) = if list_a.length >= list_b.length {
+            (list_a, list_b)
+        } else {
+            (list_b, list_a)
+        };
+
+        let mut longer = longer;
+        let mut shorter = shorter;
+
+        unsafe {
+            longer
+                .end
+                .as_mut()
+                .unwrap()
+                .as_mut()
+                .next
+                .replace(shorter.start.unwrap());
+        }
+
+        longer.end = shorter.end;
+        longer.length = longer.length + shorter.length;
+
+        longer
     }
 }
 
